@@ -46,7 +46,7 @@ const PokeBox: NextPage<Props> = ({ pokemon, index }) => {
           #{index + 1} {pokemon.name.toUpperCase()}
         </b>
         <div className="flex bg-[url('https://icon-library.com/images/pokeball-icon-transparent/pokeball-icon-transparent-28.jpg')] bg-contain bg-no-repeat bg-center rounded-xl justify-center">
-          <img
+          <Image
             src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
               index + 1
             }.png`}
