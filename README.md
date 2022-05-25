@@ -1,0 +1,1 @@
+# Pokedex by Next.js
