@@ -8,7 +8,7 @@
     "export": "next export",
     "start": "next start -p $PORT",
     "lint": "next lint",
-    "heroku-postbuild": "npm run build"
+    "deploy": "npm run build && npm run export"
   },
   "dependencies": {
     "axios": "^0.27.2",
