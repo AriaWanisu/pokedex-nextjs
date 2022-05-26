@@ -1,6 +1,25 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  grass,
+  poison,
+  fire,
+  flying,
+  water,
+  bug,
+  normal,
+  electric,
+  ground,
+  fairy,
+  fighting,
+  psychic,
+  rock,
+  steel,
+  ice,
+  ghost,
+  dragon,
+} from "./typeCss";
 import { PokeData } from "../Models/Pokemon";
 
 interface Props {
@@ -33,10 +52,28 @@ const PokeCard: NextPage<Props> = ({ pokemon }) => {
             ></Image>
           </div>
           <div>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3 gap-2">
               <b>TYPE: </b>
               {pokemon.types.map((type, index) => {
-                return <b key={index}>{type.type.name.toUpperCase()}</b>;
+                let css = "";
+                if (type.type.name === "grass") css = grass;
+                if (type.type.name === "poison") css = poison;
+                if (type.type.name === "fire") css = fire;
+                if (type.type.name === "flying") css = flying;
+                if (type.type.name === "water") css = water;
+                if (type.type.name === "bug") css = bug;
+                if (type.type.name === "normal") css = normal;
+                if (type.type.name === "electric") css = electric;
+                if (type.type.name === "ground") css = ground;
+                if (type.type.name === "fairy") css = fairy;
+                if (type.type.name === "fighting") css = fighting;
+                if (type.type.name === "psychic") css = psychic;
+                if (type.type.name === "rock") css = rock;
+                if (type.type.name === "steel") css = steel;
+                if (type.type.name === "ice") css = ice;
+                if (type.type.name === "ghost") css = ghost;
+                if (type.type.name === "dragon") css = dragon;
+                return <b key={index} className={css}>{type.type.name.toUpperCase()}</b>;
               })}
             </div>
           </div>
