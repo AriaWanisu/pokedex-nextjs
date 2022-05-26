@@ -22,11 +22,11 @@
 
 // export default pokemon;
 import type { NextPage } from "next";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { getAllPokemon } from "../../logic/api/pokemon";
 import { PokeData } from "../../Models/Pokemon";
+import PokeCard from "../../components/PokeCard";
 
 interface Props {
   pokemon: PokeData;
@@ -55,33 +55,7 @@ const pokemon: NextPage<Props> = ({ pokemon }) => {
   return (
     <div className=" h-screen bg-gradient-to-br from-teal-200 to-emerald-500">
       <div className="flex justify-center">
-        <div
-          className="bg-white text-center rounded border p-10 "
-          style={{ marginTop: "1rem", marginBottom: "1rem" }}
-        >
-          <div className="grid grid-cols-3 gap-4">
-            <div className="col-span-3">
-              <b className="font-bold text-xl">
-                #{pokemon.id} {pokemon.name.toUpperCase()}
-              </b>
-            </div>
-            <div className="col-span-2">
-              <Image
-                className="transition ease-in-out hover:-translate-y-1 hover:scale-110"
-                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
-                height={150}
-                width={150}
-              ></Image>
-            </div>
-            <div>
-              <ul>
-                {pokemon.types.map((type, index) => {
-                  return <li key={index}>{type.type.name}</li>;
-                })}
-              </ul>
-            </div>
-          </div>
-        </div>
+        <PokeCard pokemon={pokemon} />
       </div>
     </div>
   );
