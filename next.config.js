@@ -8,6 +8,7 @@ const nextConfig = {
     // reactStrictMode: true,
     // assetPrefix: isProd ? "/pokedex-nextjs/" : "",
   },
+  encrypt: true,
 };
 
 module.exports = nextConfig;

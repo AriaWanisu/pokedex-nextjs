@@ -5,14 +5,14 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import PokeBox from "../components/PokeBox";
 import { poke, pokemon } from "../Models/ListPokemon";
-import axiosInstance from "../logic/api/axiosIntance";
+import { getAllPokemon, getPokemon } from "../logic/api/pokemon";
 
 interface Props {
   posts: pokemon[];
 }
 
 const Home: NextPage<Props> = ({ posts }) => {
-  // console.log(posts);
+  console.log(posts);
 
   return (
     <div className="flex justify-center bg-gradient-to-br from-teal-200 to-emerald-500">
@@ -30,10 +30,21 @@ const Home: NextPage<Props> = ({ posts }) => {
 
 export async function getStaticProps() {
   let pokemonlist: any;
-  await axiosInstance
-    .get("/pokemon?limit=151&offset=0")
-    .then((res) => (pokemonlist = res.data.results));
+  let url = "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0";
 
+  const loadingPokemon = async (data) => {
+    let pokeData = await Promise.all(
+      data.map(async (pokemon) => {
+        let pokeRecord: any = await getPokemon(pokemon.url);
+        return pokeRecord.data;
+      })
+    );
+    pokemonlist = pokeData;
+  };
+
+  let res: any = await getAllPokemon(url);
+  // await loadingPokemon(res.results);
+  pokemonlist = res.results;
   return {
     props: {
       posts: pokemonlist,
