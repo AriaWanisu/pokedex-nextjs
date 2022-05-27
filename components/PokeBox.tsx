@@ -68,7 +68,12 @@ const PokeBox: NextPage<Props> = ({ pokemon, index }) => {
     <div key={index}>
       <div className="bg-white rounded p-10 max-w-xs max-h-full">
         <b>
-          #{index + 1} {pokemon.name.toUpperCase()}
+        #
+          {(() => {
+            if (index + 1 <= 10) return "00" + (index + 1);
+            else if (index + 1 <= 100) return "0" + (index + 1);
+            else return index + 1;
+          })()} {pokemon.name.toUpperCase()}
         </b>
         <button
           className="flex bg-[url('https://icon-library.com/images/pokeball-icon-transparent/pokeball-icon-transparent-28.jpg')] bg-contain bg-no-repeat bg-center rounded-xl justify-center "

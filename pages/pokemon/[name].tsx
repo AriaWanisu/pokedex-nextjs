@@ -26,15 +26,17 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { getAllPokemon } from "../../logic/api/pokemon";
 import { PokeData } from "../../Models/Pokemon";
+import { PokemonSpecies } from "../../Models/PokemonSpecies"
 import PokeCard from "../../components/PokeCard";
 
 interface Props {
   pokemon: PokeData;
+  species: PokemonSpecies;
 }
 
 export async function getStaticPaths() {
   const res: any = await getAllPokemon(
-    "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+    "https://pokeapi.co/api/v2/pokemon?limit=10000&offset=0"
   );
 
   const paths = res.results.map((pokemon) => ({
@@ -47,15 +49,16 @@ export async function getStaticPaths() {
   };
 }
 
-const pokemon: NextPage<Props> = ({ pokemon }) => {
-  //   console.log(pokemon);
+const pokemon: NextPage<Props> = ({ pokemon, species }) => {
+  console.log(pokemon);
+  console.log(species);
   //   const router = useRouter();
   //   const { name } = router.query;
 
   return (
     <div className=" h-screen bg-gradient-to-br from-teal-200 to-emerald-500">
       <div className="flex justify-center">
-        <PokeCard pokemon={pokemon} />
+        <PokeCard pokemon={pokemon} species={species} />
       </div>
     </div>
   );
@@ -68,10 +71,14 @@ export async function getStaticProps({ params }) {
     "https://pokeapi.co/api/v2/pokemon/" + params.name
   );
   const pokemonData = res.data;
+  const url = res.data.species.url;
+  const resSp = await axios.get(url);
+  const pokemonSpecies = resSp.data;
 
   return {
     props: {
       pokemon: pokemonData,
+      species: pokemonSpecies
     },
   };
 }
