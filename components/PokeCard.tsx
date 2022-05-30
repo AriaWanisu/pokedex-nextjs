@@ -23,6 +23,7 @@ import {
 import { PokeData } from "../Models/Pokemon";
 import { PokemonSpecies } from "../Models/PokemonSpecies";
 import { useState } from "react";
+import axios from "axios";
 
 interface Props {
   pokemon: PokeData;
@@ -31,11 +32,12 @@ interface Props {
 
 const PokeCard: NextPage<Props> = ({ pokemon, species }) => {
   const [isAbi, setIsAbi] = useState(false);
+  const [ability, setAbility] = useState<any>();
 
   return (
     <div>
       <div
-        className="bg-white rounded-xl border p-8 drop-shadow-2xl "
+        className="bg-white rounded-xl border p-8 drop-shadow-2xl"
         style={{ marginTop: "1rem", marginBottom: "1rem" }}
       >
         <div className="grid grid-cols-3 gap-4">
@@ -53,9 +55,9 @@ const PokeCard: NextPage<Props> = ({ pokemon, species }) => {
         </div>
         <br />
         <div className="grid grid-cols-2 grid-flow-col gap-3">
-          <div className="bg-slate-200 rounded-xl shadow-lg">
+          <div className="bg-slate-200 rounded-xl shadow-lg flex justify-center">
             <Image
-              className="transition ease-in-out hover:-translate-y-1 hover:scale-110"
+              className="transition ease-in-out hover:-translate-y-1 hover:scale-110 "
               src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
               height={250}
               width={250}
@@ -113,36 +115,78 @@ const PokeCard: NextPage<Props> = ({ pokemon, species }) => {
                   <b>Category: </b> {species.genera[7].genus}
                 </div>
               </div>
-              <div className="row-span-2 grid grid-cols-2 justify-items-start">
-                <div>
-                  <b>Abilities: </b>
-                </div>
-                <ul className="list-disc" onClick={() => setIsAbi(!isAbi)}>
-                  {pokemon.abilities.map((ability, index) => {
-                    const arr = ability.ability.name.split("-");
-                    for (var i = 0; i < arr.length; i++) {
-                      arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
-                    }
-                    const str = arr.join(" ");
-                    return (
-                      <li key={index}>
-                        <button>{str}</button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+
               {isAbi ? (
-                <div className="bg-slate-200 p-1">
-                  <div>Ability detail here</div>
+                <div className="row-span-3 rounded-md justify-between bg-slate-200 p-2">
+                  <div className="grid grid-cols-2">
+                    <b>Ability Info.</b>
+                    <button
+                      className="justify-self-end"
+                      onClick={() => {
+                        setIsAbi(false);
+                        setAbility([]);
+                      }}
+                    >
+                      x
+                    </button>
+                  </div>
+                  <div className="w-fit">
+                    {/* <b>Abilities: </b> */}
+                    <p className="whitespace-normal">
+                      {console.log(ability)}
+                      {ability}
+                    </p>
+                  </div>
                 </div>
               ) : (
-                <></>
+                <div className="row-span-3 grid grid-cols-2 rounded-md justify-items-start p-2">
+                  <div>
+                    <b>Abilities: </b>
+                  </div>
+                  <ul className="list-disc">
+                    {pokemon.abilities.map((ability, index) => {
+                      const arr = ability.ability.name.split("-");
+                      for (var i = 0; i < arr.length; i++) {
+                        arr[i] =
+                          arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+                      }
+                      const str = arr.join(" ");
+                      return (
+                        <li
+                          key={index}
+                          onClick={() => {
+                            setIsAbi(true);
+                            axios
+                              .get(ability.ability.url)
+                              .then((res) =>
+                                setAbility(
+                                  res.data.flavor_text_entries[1].flavor_text
+                                )
+                              );
+                          }}
+                        >
+                          <button>{str}</button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
               )}
             </div>
             <br />
           </div>
         </div>
+
+        {/* {isAbi ? (
+          <div className="bg-slate-200 p-1 w-4/5 row-span-2">
+            <div>
+              {console.log(ability)}
+              {ability}
+            </div>
+          </div>
+        ) : (
+          <></>
+        )} */}
 
         <div className="grid justify-items-end">
           <Link href="/">
